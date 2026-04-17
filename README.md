@@ -2,6 +2,8 @@
 
 # deno-gemini-proxy
 
+Copy GEMINI_API_KEY from [Google AI Studio](https://aistudio.google.com/apikey)
+
 ```js
 const res = await fetch("https://foo.bar.deno.net", {
   method: "POST",
