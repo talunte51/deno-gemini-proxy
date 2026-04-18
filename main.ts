@@ -16,7 +16,12 @@ Deno.serve(async (req) => {
   }
 
   const ai = new GoogleGenAI({ apiKey: Deno.env.get("GEMINI_API_KEY") })
-  const response = await ai.models.generateContent(await req.json())
-  console.log(response)
-  return new Response(JSON.stringify(response, null, 2), { headers: { ...headers, 'Content-Type': 'application/json' } })
+  try {
+    const response = await ai.models.generateContent(await req.json())
+    console.log(response)
+    return new Response(JSON.stringify(response, null, 2), { headers: { ...headers, 'Content-Type': 'application/json' } })
+  } catch (e) {
+    console.error(e)
+    return new Response(e.message, { status: e.status, headers: { ...headers, 'Content-Type': 'application/json' } })
+  }
 })
