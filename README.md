@@ -10,6 +10,7 @@ const res = await fetch("https://foo.bar.deno.net", {
   body: JSON.stringify({
     model: "gemini-3.1-flash-lite-preview",
     contents: "Hello Google",
+    tools: [{ googleSearch: {} }, { codeExecution: {} }],
   }),
 });
 if (res.ok) {
