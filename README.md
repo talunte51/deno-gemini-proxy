@@ -12,8 +12,13 @@ const res = await fetch("https://foo.bar.deno.net", {
     contents: "Hello Google",
   }),
 });
-const obj = await res.json();
-const text = obj.candidates?.[0]?.content?.parts?.[0]?.text || "Generate failed";
-console.log(text);
+if (res.ok) {
+    const obj = await res.json();
+    const text = obj.candidates?.[0]?.content?.parts?.[0]?.text || "Generate failed";
+    console.log(text);
+} else {
+    const { error } = await res.json();
+    console.log(error.message);
+}
 ```
 
