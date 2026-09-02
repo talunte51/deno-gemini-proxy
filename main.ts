@@ -8,7 +8,6 @@ const headers = {
 };
 
 Deno.serve(async (request) => {
-  // 处理 OPTIONS 预检请求
   if (request.method === "OPTIONS") {
     return new Response(null, { status: 204, headers });
   }
@@ -18,10 +17,13 @@ Deno.serve(async (request) => {
   url.protocol = "https";
 
   const newHeaders = new Headers(request.headers);
-  // 把 Authorization Bearer 转为 x-goog-api-key
+  
+  // 从 Authorization header 提取 API Key
   const auth = request.headers.get("Authorization");
   if (auth) {
-    newHeaders.set("x-goog-api-key", auth.replace("Bearer ", ""));
+    const apiKey = auth.replace("Bearer ", "");
+    url.searchParams.set("key", apiKey);
+    newHeaders.set("x-goog-api-key", apiKey);
   }
 
   const newRequest = new Request(url.toString(), {
